@@ -1,8 +1,9 @@
 require 'contentful/database_importer/support'
-require 'contentful/database_importer/resource_class_methods'
 require 'contentful/database_importer/resource_coercions'
 require 'contentful/database_importer/resource_relationships'
 require 'contentful/database_importer/resource_bootstrap_methods'
+require 'contentful/database_importer/resource_class_methods'
+require 'contentful/database_importer/resource_field_class_methods'
 require 'contentful/database_importer/resource_bootstrap_class_methods'
 require 'mimemagic'
 
@@ -17,6 +18,7 @@ module Contentful
 
       def self.included(base)
         base.extend(ResourceClassMethods)
+        base.extend(ResourceFieldClassMethods)
         base.extend(ResourceBootstrapClassMethods)
       end
 

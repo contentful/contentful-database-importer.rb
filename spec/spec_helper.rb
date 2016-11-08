@@ -38,7 +38,20 @@ class TableDouble
     @rows = rows
   end
 
-  def where(matches = {})
+  # Simplistic WHERE for test purposes
+  # only supporting AND and = operators
+  def string_where(query)
+    matches = {}
+    parts = query.downcase.split('and').map(&:strip)
+    parts.each do |p|
+      p_parts = p.split('=').map(&:strip)
+      matches[p_parts[0].to_sym] = p_parts[1].gsub('"', '')
+    end
+
+    hash_where(matches)
+  end
+
+  def hash_where(matches)
     return all if matches.empty?
 
     all.select do |row|
@@ -51,7 +64,33 @@ class TableDouble
     end
   end
 
+  def where(matches = nil)
+    return TableDouble.new(name, all) if matches.nil?
+
+    fetched_rows = []
+    case matches
+    when String
+      fetched_rows = string_where(matches)
+    when Hash
+      fetched_rows = hash_where(matches)
+    end
+
+    TableDouble.new(name, fetched_rows)
+  end
+
+  def map
+    rows.map do |row|
+      yield row if block_given?
+    end
+  end
+
+  def first
+    rows.first
+  end
+
   def all
     rows
   end
+
+  alias to_a all
 end

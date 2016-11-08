@@ -131,6 +131,15 @@ class ErrorTypesMockResource
   field :array, type: :array, item_type: :array
 end
 
+class QueryMockResource
+  include Contentful::DatabaseImporter::Resource
+
+  self.table_name = 'query'
+  self.query = 'foo = "bar"'
+
+  field :foo, type: :string
+end
+
 describe Contentful::DatabaseImporter::Resource do
   describe 'class methods' do
     describe '::table_name' do
@@ -178,6 +187,16 @@ describe Contentful::DatabaseImporter::Resource do
 
       it 'returns the maps_to value if present' do
         expect(MapsToMockResource.display_field).to eq :bar
+      end
+    end
+
+    describe '::query' do
+      it 'is nil by default' do
+        expect(MockResource.query).to be_nil
+      end
+
+      it 'can be overwritten' do
+        expect(QueryMockResource.query).to eq 'foo = "bar"'
       end
     end
 
@@ -594,6 +613,25 @@ describe Contentful::DatabaseImporter::Resource do
           id: 'bar'
         })
       end
+    end
+  end
+
+  describe 'querying' do
+    it 'does not alter the dataset if nil' do
+      table = TableDouble.new(:mock_resource, [{foo: 'hola', bar: 'chau'}, {foo: 'hallo', bar: 'tchuss'}])
+      mock_database = DatabaseDouble.new([table])
+      allow(Contentful::DatabaseImporter).to receive(:database) { mock_database }
+
+      expect(MockResource.all.size).to eq 2
+    end
+
+    it 'returns only the values that match the query' do
+      table = TableDouble.new(:query, [{foo: 'baz'}, {foo: 'foobar'}, {foo: 'bar'}])
+      mock_database = DatabaseDouble.new([table])
+      allow(Contentful::DatabaseImporter).to receive(:database) { mock_database }
+
+      expect(QueryMockResource.all.size).to eq 1
+      expect(QueryMockResource.all.first.bootstrap_fields[:foo]).to eq 'bar'
     end
   end
 

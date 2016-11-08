@@ -211,6 +211,25 @@ In the case of circular references, you will have to create 2 or more classes po
 
 **Note**: Merge classes require at least 1 field declared, even if it's excluded from output.
 
+### Querying
+
+You might want to reduce your datasets to specific subsets, in that case, you can use Querying to specify your subsets of data.
+
+A query is an `SQL String`. E.g: `foo = 'bar' AND baz > 2`.
+
+This is optional and can be specified in the Resource like follows:
+
+```ruby
+class MyResource
+  include Contentful::DatabaseImporter::Resource
+
+  self.query = "foo = 'bar' AND baz > 2"
+
+  field :foo, type: :string
+  field :baz, type: :integer
+end
+```
+
 ### Configuration
 
 ```ruby
