@@ -215,8 +215,10 @@ In the case of circular references, you will have to create 2 or more classes po
 
 ```ruby
 Contentful::DatabaseImporter.setup do |config|
-  config.space_name = 'My Cool New Space' # Required - the destination space name
+  config.space_name = 'My Cool New Space' # Required only for `::run!` - the destination space name
+  config.space_id = 'aAbBcC123foo' # Required only for `::update_space!` - the destination space ID
   config.database_connection = 'postgres://user:pass@host:port' # Required - the DB Connection string
+  config.skip_content_types = true # Optional (only for `::update_space!`) - defaults to `true` - Skips Content Type creation upon updating a space
 end
 ```
 
@@ -246,6 +248,12 @@ Contentful::DatabaseImporter.generate_json!
 
 ```ruby
 Contentful::DatabaseImporter.run!
+```
+
+* Generate the JSON and Import it to Contentful (updates a Space with all the content):
+
+```ruby
+Contentful::DatabaseImporter.update_space!
 ```
 
 ## Contributing

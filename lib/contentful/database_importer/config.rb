@@ -2,10 +2,25 @@ module Contentful
   module DatabaseImporter
     # Configuration for Importer
     class Config
-      attr_accessor :space_name, :database_connection
+      attr_accessor :space_name,
+                    :space_id,
+                    :database_connection,
+                    :skip_content_types
+
+      def initialize
+        @skip_content_types = true
+      end
+
+      def complete_for_run?
+        !space_name.nil? && !database_connection.nil?
+      end
+
+      def complete_for_update?
+        !space_id.nil? && !database_connection.nil?
+      end
 
       def complete?
-        !space_name.nil? && !database_connection.nil?
+        complete_for_run? || complete_for_update?
       end
     end
   end

@@ -37,10 +37,14 @@ module Contentful
       JsonGenerator.generate_json!
     end
 
-    def self.run_bootstrap!(file, json)
-      file.write(json)
+    def self.generate_json_file!
+      file = Tempfile.new("import_#{config.space_name}")
+      file.write(generate_json!)
       file.close
+      file
+    end
 
+    def self.bootstrap_create_space!(file)
       Contentful::Bootstrap::CommandRunner.new.create_space(
         config.space_name,
         json_template: file.path
@@ -49,11 +53,24 @@ module Contentful
       file.unlink
     end
 
-    def self.run!
-      json = generate_json!
+    def self.bootstrap_update_space!(file)
+      Contentful::Bootstrap::CommandRunner.new.update_space(
+        config.space_id,
+        json_template: file.path,
+        skip_content_types: config.skip_content_types
+      )
+    ensure
+      file.unlink
+    end
 
-      file = Tempfile.new("import_#{config.space_name}")
-      run_bootstrap!(file, json)
+    def self.run!
+      raise 'Configuration is incomplete' unless config.complete_for_run?
+      bootstrap_create_space!(generate_json_file!)
+    end
+
+    def self.update_space!
+      raise 'Configuration is incomplete' unless config.complete_for_update?
+      bootstrap_update_space!(generate_json_file!)
     end
   end
 end

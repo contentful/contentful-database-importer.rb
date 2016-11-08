@@ -21,14 +21,14 @@ describe Contentful::DatabaseImporter do
     describe '::config' do
       it 'returns a default config when empty' do
         expect(described_class.config).to be_a Contentful::DatabaseImporter::Config
-        expect(described_class.config.complete?).to be_falsey
+        expect(described_class.config.complete_for_run?).to be_falsey
       end
 
       it 'returns the settuped config when modified' do
         described_class.config.database_connection = 'foo'
         described_class.config.space_name = 'bar'
 
-        expect(described_class.config.complete?).to be_truthy
+        expect(described_class.config.complete_for_run?).to be_truthy
       end
     end
 
@@ -40,7 +40,7 @@ describe Contentful::DatabaseImporter do
           config.database_connection = 'bar'
         end
 
-        expect(described_class.config.complete?).to be_truthy
+        expect(described_class.config.complete_for_run?).to be_truthy
       end
 
       it 'fails if configuration is not complete after setup' do
@@ -95,6 +95,30 @@ describe Contentful::DatabaseImporter do
         end
 
         described_class.run!
+      end
+
+      it 'fails if not properly configured' do
+        expect { described_class.run! }.to raise_error 'Configuration is incomplete'
+      end
+    end
+
+    describe '::update_space!' do
+      it 'calls bootstrap with the json in a tempfile' do
+        file = FileDouble.new
+        expect(Contentful::DatabaseImporter::JsonGenerator).to receive(:generate_json!)
+        expect(Tempfile).to receive(:new) { file }
+        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:update_space).with('foo', json_template: 'foo', skip_content_types: true)
+
+        described_class.setup do |config|
+          config.space_id = 'foo'
+          config.database_connection = 'bar'
+        end
+
+        described_class.update_space!
+      end
+
+      it 'fails if not properly configured' do
+        expect { described_class.update_space! }.to raise_error 'Configuration is incomplete'
       end
     end
   end
