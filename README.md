@@ -18,6 +18,10 @@ Contentful offers tools for managing editorial teams and enabling cooperation be
 you to generate a JSON file that's a valid [`contentful_bootstrap`](https://github.com/contentful/contentful-bootstrap.rb) JSON Template,
 or directly import to Contentful, creating a new space and using your data to populate the content.
 
+## Requirements
+
+* Ruby
+* A Relational Database
 
 ## Installation
 
@@ -39,6 +43,14 @@ mkdir my_importer_dir && cd my_importer_dir
 source 'https://rubygems.org'
 
 gem 'contentful-database-importer'
+```
+
+* Add to your _`Gemfile`_ the handler specific to your database (e.g.):
+
+```ruby
+gem 'pg' # if using Postgres
+gem 'sqlite3' # if using SQLite
+gem 'mysql' # if using MySQL
 ```
 
 * Create your importer file, for example _`import.rb`_:
