@@ -29,10 +29,7 @@ module Contentful
       def prepare_field(database_name, options)
         field = prepare_standard_field_options(database_name, options)
         field[:item_type] = options.fetch(:item_type) if field[:type] == :array
-        fetch_relationship_options(
-          field,
-          options
-        ) if options.fetch(:relationship, false)
+        fetch_relationship_options(field, options) if options.fetch(:relationship, false)
 
         field
       end

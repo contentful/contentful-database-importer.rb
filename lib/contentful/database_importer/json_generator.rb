@@ -67,9 +67,7 @@ module Contentful
 
         merge_entries(entry_definition, content_type_definition, result)
 
-        result[:assets].concat(
-          entry.associated_assets
-        ) unless entry.associated_assets.empty?
+        result[:assets].concat(entry.associated_assets) unless entry.associated_assets.empty?
 
         result[:entries][content_type_definition[:id]] << entry_definition
       end

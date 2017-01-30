@@ -79,8 +79,10 @@ module Contentful
         end
       end
 
-      def coerce_object(*)
-        raise 'Not yet supported by Contentful Bootstrap'
+      def coerce_object(value)
+        return value if value.is_a?(::Hash)
+
+        raise "Can't coerce #{value} to JSON Object"
       end
 
       def create_associated_asset(name, value)

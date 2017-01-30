@@ -19,8 +19,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'contentful_bootstrap', '~> 3.0'
-  spec.add_dependency 'contentful-management', '~> 0.9'
+  spec.add_dependency 'contentful_bootstrap', '~> 3.5'
   spec.add_dependency 'sequel', '~> 4.39'
   spec.add_dependency 'base62-rb'
   spec.add_dependency 'mimemagic'

@@ -79,9 +79,11 @@ module Contentful
       end
 
       def id
-        self.class.id_generator = IdGenerator::Base.new(
-          self.class.default_generator_options
-        ) if self.class.id_generator.nil?
+        if self.class.id_generator.nil?
+          self.class.id_generator = IdGenerator::Base.new(
+            self.class.default_generator_options
+          )
+        end
 
         self.class.id_generator.run(self, index)
       end
