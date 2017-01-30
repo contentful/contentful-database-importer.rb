@@ -118,16 +118,16 @@ class AllTypesMockResource
   field :date, type: :date
   field :asset, type: :asset
   field :boolean, type: :boolean
+  field :object, type: :object
   field :array, type: :array, item_type: :string
 end
 
 class ErrorTypesMockResource
   include Contentful::DatabaseImporter::Resource
 
-  self.table_name = 'object'
+  self.table_name = 'error_types'
 
   field :foo, type: :string
-  field :object, type: :object
   field :array, type: :array, item_type: :array
 end
 
@@ -793,11 +793,19 @@ describe Contentful::DatabaseImporter::Resource do
       end
     end
 
-    describe 'invalid coercions' do
-      it ':object type coercions are not supported by bootstrap' do
-        expect { ErrorTypesMockResource.new({object: {foo: 'bar'}}) }.to raise_error 'Not yet supported by Contentful Bootstrap'
+    describe 'object' do
+      it ':object type coercions are supported by bootstrap' do
+        expect { AllTypesMockResource.new({object: {foo: 'bar'}}) }.not_to raise_error 'Not yet supported by Contentful Bootstrap'
+        entry = AllTypesMockResource.new({object: {foo: 'bar'}})
+        expect(entry.bootstrap_fields[:object]).to eq(
+          {
+            foo: 'bar'
+          }
+        )
       end
+    end
 
+    describe 'invalid coercions' do
       it ':array type cannot contain :array items' do
         expect { ErrorTypesMockResource.new({array: [['foo']]}) }.to raise_error "Can't coerce nested arrays"
       end

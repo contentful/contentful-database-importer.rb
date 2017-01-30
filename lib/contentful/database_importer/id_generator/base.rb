@@ -23,11 +23,8 @@ module Contentful
         end
 
         def find_on_entry(entry_data, match)
-          if entry_data.excluded_fields.key?(match)
-            return entry_data.excluded_fields[match]
-          elsif entry_data.bootstrap_fields.key?(match)
-            return entry_data.bootstrap_fields[match]
-          end
+          return entry_data.excluded_fields[match] if entry_data.excluded_fields.key?(match)
+          return entry_data.bootstrap_fields[match] if entry_data.bootstrap_fields.key?(match)
 
           raise "Template could not be resolved, #{match} not found."
         end

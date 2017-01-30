@@ -155,7 +155,7 @@ The options are:
 - `:boolean`: Boolean.
 - `:location`: Geographical Location (can be coerced from a String, Hash or Array.)
 - `:date`: An ISO8601 Date (can be coerced from a Date/DateTime object or String).
-- `:object`: A JSON Object. _Currently not supported_
+- `:object`: A JSON Object.
 - `:asset`: A File description. A String containing the file URL needs to be provided.
 - `:array`: An Array of elements.
 

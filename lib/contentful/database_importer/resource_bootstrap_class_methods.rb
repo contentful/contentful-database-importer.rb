@@ -32,10 +32,7 @@ module Contentful
       end
 
       def items_type(field_data)
-        return {
-          type: 'Link',
-          linkType: array_link_type(field_data)
-        } if array_link?(field_data)
+        return { type: 'Link', linkType: array_link_type(field_data) } if array_link?(field_data)
 
         type = definition_type(field_data[:item_type])
 
@@ -88,9 +85,7 @@ module Contentful
         definition = basic_field_definition(field_data)
 
         definition[:type] = 'Array' if array?(field_data)
-        definition[:linkType] = link_type(
-          field_data[:type]
-        ) if link_type?(field_data)
+        definition[:linkType] = link_type(field_data[:type]) if link_type?(field_data)
         definition[:items] = items_type(field_data) if array?(field_data)
 
         definition

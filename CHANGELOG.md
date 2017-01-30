@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### Changed
+* Updated Contentful Bootstrap Version
+
+### Fixed
+* Fix Rubocop Offenses
+
+### Added
+* Support for `:object` field type
+
 ## 0.2.0
 
 ### Added
