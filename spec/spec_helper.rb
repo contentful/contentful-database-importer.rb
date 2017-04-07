@@ -1,8 +1,8 @@
+require 'simplecov'
+SimpleCov.start
+
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'contentful/database_importer'
-require 'simplecov'
-
-SimpleCov.start
 
 RSpec.configure do |config|
   config.filter_run :focus => true
