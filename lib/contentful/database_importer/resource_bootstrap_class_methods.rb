@@ -40,7 +40,7 @@ module Contentful
         error += field_data[:maps_to].to_s
         raise error if type.nil?
 
-        type
+        { type: type }
       end
 
       def array_link?(field_data)

@@ -342,7 +342,7 @@ describe Contentful::DatabaseImporter::Resource do
         }
 
         matches.each do |type, expected|
-          expect(MockResource.items_type(item_type: type)).to eq expected
+          expect(MockResource.items_type(item_type: type)).to eq(type: expected)
         end
       end
 
@@ -432,7 +432,7 @@ describe Contentful::DatabaseImporter::Resource do
             id: :foo,
             name: :foo,
             type: 'Array',
-            items: 'Symbol'
+            items: { type: 'Symbol' }
           }
           expect(MockResource.field_definition(ArrayMockResource.fields[0])).to eq expected
         end
