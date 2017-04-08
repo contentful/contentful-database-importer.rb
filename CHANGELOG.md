@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.3.1
+
+### Fixed
+* Fixed issue when serializing non-reference arrays
+
 ## 0.3.0
 
 ### Changed
