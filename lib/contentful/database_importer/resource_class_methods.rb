@@ -53,9 +53,11 @@ module Contentful
       end
 
       def display_field
-        @display_field || (fields.find do |f|
+        default_display_field = fields.reject { |f| f[:exclude_from_output] }.find do |f|
           f[:type] == :string || f[:type] == :symbol
-        end || {})[:maps_to]
+        end || {}
+
+        @display_field || default_display_field[:maps_to]
       end
 
       def display_field=(field_name)

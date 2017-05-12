@@ -92,7 +92,7 @@ module Contentful
       end
 
       def fields_definition
-        fields.map { |f| field_definition(f) }
+        fields.reject { |f| f[:exclude_from_output] }.map { |f| field_definition(f) }
       end
 
       def content_type_definition

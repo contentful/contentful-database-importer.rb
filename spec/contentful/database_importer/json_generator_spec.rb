@@ -11,6 +11,17 @@ class MockEntry
   end
 end
 
+class MockEntryExcludedField
+  include Contentful::DatabaseImporter::Resource
+
+  field :id, type: :string, exclude_from_output: true
+  field :foo, type: :string
+
+  def self.all
+    []
+  end
+end
+
 describe Contentful::DatabaseImporter::JsonGenerator do
   let(:empty_bootstrap) { {
       version: 3,
@@ -92,6 +103,83 @@ describe Contentful::DatabaseImporter::JsonGenerator do
                 id: 'image',
                 linkType: 'Asset'
               }
+            }
+          }
+        ]
+
+        expect(described_class.generate_json).to eq expected
+      end
+
+      it 'assets with non \w characters in the filename get replaced to _ for the id' do
+        allow(ObjectSpace).to receive(:each_object) { [MockEntry] }
+        allow(MockEntry).to receive(:all) { [MockEntry.new({foo: 'bar', bar: 'https://foo.com/image&a.jpg'}, 0)] }
+
+        expected = empty_bootstrap.dup
+        expected[:contentTypes] << {
+          id: 'mock_entry',
+          name: 'MockEntry',
+          displayField: :foo,
+          fields: [{
+            id: :foo,
+            name: :foo,
+            type: 'Symbol'
+          },
+          {
+            id: :bar,
+            name: :bar,
+            type: 'Link',
+            linkType: 'Asset'
+          }]
+        }
+        expected[:assets] << {
+          id: 'image_a',
+          title: 'image&a',
+          file: {
+            filename: 'image&a',
+            url: 'https://foo.com/image&a.jpg',
+            contentType: 'image/jpeg'
+          }
+        }
+        expected[:entries]['mock_entry'] = [
+          {
+            sys: {
+              id: 'mock_entry_0'
+            },
+            fields: {
+              foo: 'bar',
+              bar: {
+                id: 'image_a',
+                linkType: 'Asset'
+              }
+            }
+          }
+        ]
+
+        expect(described_class.generate_json).to eq expected
+      end
+
+      it 'excluded fields do not appear on the content type' do
+        allow(ObjectSpace).to receive(:each_object) { [MockEntryExcludedField] }
+        allow(MockEntryExcludedField).to receive(:all) { [MockEntryExcludedField.new({id: 'foobar', foo: 'bar'}, 0)] }
+
+        expected = empty_bootstrap.dup
+        expected[:contentTypes] << {
+          id: 'mock_entry_excluded_field',
+          name: 'MockEntryExcludedField',
+          displayField: :foo,
+          fields: [{
+            id: :foo,
+            name: :foo,
+            type: 'Symbol'
+          }]
+        }
+        expected[:entries]['mock_entry_excluded_field'] = [
+          {
+            sys: {
+              id: 'mock_entry_excluded_field_0'
+            },
+            fields: {
+              foo: 'bar',
             }
           }
         ]

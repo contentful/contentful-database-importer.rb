@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+* Excluded Fields are no longer part of the Content Type definition
+* Display Fields no longer take into account excluded fields
+* Asset IDs no longer contain non-valid characters
+
 ## 0.3.1
 
 ### Fixed

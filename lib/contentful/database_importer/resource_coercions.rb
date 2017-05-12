@@ -88,7 +88,7 @@ module Contentful
       def create_associated_asset(name, value)
         extension = value.split('.').last
         associated_assets << {
-          id: Support.snake_case(name),
+          id: asset_id_from_name(name),
           title: name,
           file: {
             filename: name,
@@ -107,8 +107,12 @@ module Contentful
 
         {
           linkType: 'Asset',
-          id: Support.snake_case(name)
+          id: asset_id_from_name(name)
         }
+      end
+
+      def asset_id_from_name(name)
+        Support.snake_case(name.gsub(/[^\w ]/i, '_'))
       end
     end
   end
