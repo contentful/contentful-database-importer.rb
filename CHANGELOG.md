@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.2
+
 ### Fixed
 * Excluded Fields are no longer part of the Content Type definition
 * Display Fields no longer take into account excluded fields
