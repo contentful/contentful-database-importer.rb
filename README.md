@@ -98,6 +98,10 @@ class MyTable
 end
 ```
 
+For specifying namespaces for your tables, use `self.table_name = :namespace__table_name`.
+
+If planning to upgrade to Sequel `v5`, and require namespaces, at the beggining of your file add: `Sequel.split_symbols = true`. This will allow to properly handle the namespaces.
+
 #### Overriding Table and Content Type ID
 
 The methods `::table_name=` and `::content_type_id=` allow you to override the IDs for either the table or content type.
@@ -241,6 +245,8 @@ class MyResource
   field :baz, type: :integer
 end
 ```
+
+If planning to upgrade to Sequel `v5`, use `self.query = Sequel.lit("foo = 'bar' AND baz > 2")`. Sequel is deprecating string literals and allowing only this new method.
 
 ### Configuration
 

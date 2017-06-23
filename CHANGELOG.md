@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+* Added notice on using Sequel `v5` when requiring string literals on queries or namespaces. [#12](https://github.com/contentful/contentful-database-importer.rb/issues/12)
+
 ## 0.3.2
 
 ### Fixed
