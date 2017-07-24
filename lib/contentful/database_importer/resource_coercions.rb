@@ -112,7 +112,7 @@ module Contentful
       end
 
       def asset_id_from_name(name)
-        Support.snake_case(name.gsub(/[^\w ]/i, '_'))
+        Support.snake_case(name.gsub(/[^\w ]/i, '_'))[0...64]
       end
     end
   end
