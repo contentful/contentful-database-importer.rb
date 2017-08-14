@@ -3,7 +3,7 @@ module Contentful
     # Relationship methods for Resource
     module ResourceRelationships
       def fetch_relations(relationship_field_definition)
-        relations = [:many, :one, :through]
+        relations = %i[many one through]
         if relations.include?(relationship_field_definition[:relationship])
           return send(
             "fetch_#{relationship_field_definition[:relationship]}".to_sym,

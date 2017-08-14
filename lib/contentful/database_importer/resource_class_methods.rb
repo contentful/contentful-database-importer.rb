@@ -70,10 +70,16 @@ module Contentful
 
       def all
         entries = []
-        rows = table.where(query).all
+        rows = if query.nil?
+                 table.all
+               else
+                 table.where(query).all
+               end
+
         rows.each_with_index do |row, index|
           entries << new(row, index)
         end
+
         entries
       end
     end
