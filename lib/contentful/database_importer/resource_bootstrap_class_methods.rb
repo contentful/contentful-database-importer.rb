@@ -46,7 +46,7 @@ module Contentful
       def array_link?(field_data)
         (field_data[:type] == :array && field_data[:item_type] == :asset) ||
           (resource?(field_data[:type]) &&
-           [:many, :through].include?(field_data[:relationship]))
+           %i[many through].include?(field_data[:relationship]))
       end
 
       def array_link_type(field_data)
@@ -61,7 +61,7 @@ module Contentful
       def array?(field_data)
         field_data[:type] == :array ||
           (resource?(field_data[:type]) &&
-           [:many, :through].include?(field_data[:relationship]))
+           %i[many through].include?(field_data[:relationship]))
       end
 
       def resource?(other)

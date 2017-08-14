@@ -30,7 +30,9 @@ module Contentful
 
         if prev_ct_definition
           result[:contentTypes].delete(prev_ct_definition)
-          content_type_definition.merge!(prev_ct_definition)
+          content_type_definition = Support.merge(
+            prev_ct_definition, content_type_definition
+          )
         end
 
         result[:contentTypes] << content_type_definition
@@ -56,16 +58,16 @@ module Contentful
           result
         )
 
-        return unless prev_entry
+        return entry_definition unless prev_entry
 
         result[:entries][content_type_definition[:id]].delete(prev_entry)
-        entry_definition.merge!(prev_entry)
+        Support.merge(prev_entry, entry_definition)
       end
 
       def self.create_entry(entry, content_type_definition, result)
         entry_definition = entry.to_bootstrap
 
-        merge_entries(entry_definition, content_type_definition, result)
+        entry_definition = merge_entries(entry_definition, content_type_definition, result)
 
         result[:assets].concat(entry.associated_assets) unless entry.associated_assets.empty?
 
