@@ -47,6 +47,7 @@ module Contentful
     def self.bootstrap_create_space!(file)
       Contentful::Bootstrap::CommandRunner.new.create_space(
         config.space_name,
+        locale: config.locale,
         json_template: file.path
       )
     ensure
@@ -56,6 +57,7 @@ module Contentful
     def self.bootstrap_update_space!(file)
       Contentful::Bootstrap::CommandRunner.new.update_space(
         config.space_id,
+        locale: config.locale,
         json_template: file.path,
         skip_content_types: config.skip_content_types
       )

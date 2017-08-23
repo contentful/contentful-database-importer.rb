@@ -8,16 +8,15 @@ class FileDouble
 end
 
 describe Contentful::DatabaseImporter do
+  before do
+    described_class.instance_variable_set(:@config, Contentful::DatabaseImporter::Config.new)
+  end
+
   it 'has a version number' do
     expect(Contentful::DatabaseImporter::VERSION).not_to be nil
   end
 
   describe 'class methods' do
-    before :each do
-      described_class.config.space_name = nil
-      described_class.config.database_connection = nil
-    end
-
     describe '::config' do
       it 'returns a default config when empty' do
         expect(described_class.config).to be_a Contentful::DatabaseImporter::Config
@@ -87,11 +86,26 @@ describe Contentful::DatabaseImporter do
         file = FileDouble.new
         expect(Contentful::DatabaseImporter::JsonGenerator).to receive(:generate_json!)
         expect(Tempfile).to receive(:new) { file }
-        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:create_space).with('foo', json_template: 'foo')
+        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:create_space).with('foo', locale: 'en-US', json_template: 'foo')
 
         described_class.setup do |config|
           config.space_name = 'foo'
           config.database_connection = 'bar'
+        end
+
+        described_class.run!
+      end
+
+      it 'can be called with a different locale' do
+        file = FileDouble.new
+        expect(Contentful::DatabaseImporter::JsonGenerator).to receive(:generate_json!)
+        expect(Tempfile).to receive(:new) { file }
+        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:create_space).with('foo', locale: 'es-AR', json_template: 'foo')
+
+        described_class.setup do |config|
+          config.space_name = 'foo'
+          config.database_connection = 'bar'
+          config.locale = 'es-AR'
         end
 
         described_class.run!
@@ -107,11 +121,26 @@ describe Contentful::DatabaseImporter do
         file = FileDouble.new
         expect(Contentful::DatabaseImporter::JsonGenerator).to receive(:generate_json!)
         expect(Tempfile).to receive(:new) { file }
-        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:update_space).with('foo', json_template: 'foo', skip_content_types: true)
+        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:update_space).with('foo', locale: 'en-US', json_template: 'foo', skip_content_types: true)
 
         described_class.setup do |config|
           config.space_id = 'foo'
           config.database_connection = 'bar'
+        end
+
+        described_class.update_space!
+      end
+
+      it 'can be called with a different locale' do
+        file = FileDouble.new
+        expect(Contentful::DatabaseImporter::JsonGenerator).to receive(:generate_json!)
+        expect(Tempfile).to receive(:new) { file }
+        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:update_space).with('foo', locale: 'es-AR', json_template: 'foo', skip_content_types: true)
+
+        described_class.setup do |config|
+          config.space_id = 'foo'
+          config.database_connection = 'bar'
+          config.locale = 'es-AR'
         end
 
         described_class.update_space!

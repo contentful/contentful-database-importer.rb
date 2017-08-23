@@ -256,6 +256,7 @@ Contentful::DatabaseImporter.setup do |config|
   config.space_id = 'aAbBcC123foo' # Required only for `::update_space!` - the destination space ID
   config.database_connection = 'postgres://user:pass@host:port' # Required - the DB Connection string
   config.skip_content_types = true # Optional (only for `::update_space!`) - defaults to `true` - Skips Content Type creation upon updating a space
+  config.locale = 'en-US' # Optional (only for `::update_space!` and `::run!`) - defaults to `'en-US'` - Defines the default locale for Space creation, and locale in which the content will be set for both creation and update
 end
 ```
 

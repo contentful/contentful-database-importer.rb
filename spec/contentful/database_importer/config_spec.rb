@@ -49,6 +49,18 @@ describe Contentful::DatabaseImporter::Config do
         expect(subject.skip_content_types).to be_falsey
       end
     end
+
+    describe ':locale' do
+      it 'is en-US by default' do
+        expect(subject.locale).to eq 'en-US'
+      end
+
+      it 'can be overwritten' do
+        subject.locale = 'es-AR'
+
+        expect(subject.locale).to eq 'es-AR'
+      end
+    end
   end
 
   describe 'instance methods' do

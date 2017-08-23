@@ -5,10 +5,12 @@ module Contentful
       attr_accessor :space_name,
                     :space_id,
                     :database_connection,
-                    :skip_content_types
+                    :skip_content_types,
+                    :locale
 
       def initialize
         @skip_content_types = true
+        @locale = 'en-US'
       end
 
       def complete_for_run?

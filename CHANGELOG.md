@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+* Added possibility to specify `locale` for Space creation and update.
+
 ## 0.3.3
 
 ### Added
