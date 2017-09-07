@@ -176,7 +176,7 @@ For example:
 class Foo
   field :bars, type: Bar, relationship: :many, id_field: :id, key: :foo_id
   field :baz, type: Baz, relationship: :one, id_field: :id, key: :baz_id
-  field :quxs, type: Qux, relationship: :many_through, through: :foo_qux, primary_id_field: :id, primary_key: :foo_id, foreign_key: :qux_id, foreign_id_field: :id
+  field :quxs, type: Qux, relationship: :through, through: :foo_qux, primary_id_field: :id, primary_key: :foo_id, foreign_key: :qux_id, foreign_id_field: :id
 end
 ```
 
@@ -191,7 +191,7 @@ Relationship Types:
   In the example above, it will look for all `Bar` entries which have a `:foo_id` that match the value of `:id` for the current `Foo` entry.
 - `:one`: One to One relationship, looks for the related object of the associated class that matches the value of the `:key` field in the current entry, with the value of `:id_field` in the related entry.
   In the example above, it will look for the `Baz` entry which has an ID that matches the value of `:baz_id` in the current entry.
-- `:many_through`: Many to Many relationship, looks for the related object through an intermediate lookup table, after this it behaves like `:many`.
+- `:through`: Many to Many relationship, looks for the related object through an intermediate lookup table, after this it behaves like `:many`.
   In the example above, it will look for all `Qux` entries found in the intermediate table that match the current entry `:id` and looks it up via the `Qux`s `:id`.
 
 **Note**: If you're using relationships, use a custom ID Generator template which includes a unique field for each entry,
