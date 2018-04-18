@@ -254,6 +254,7 @@ If planning to upgrade to Sequel `v5`, use `self.query = Sequel.lit("foo = 'bar'
 Contentful::DatabaseImporter.setup do |config|
   config.space_name = 'My Cool New Space' # Required only for `::run!` - the destination space name
   config.space_id = 'aAbBcC123foo' # Required only for `::update_space!` - the destination space ID
+  config.environment = 'master' # Optional (only for `::update_space!`) - defaults to `master`
   config.database_connection = 'postgres://user:pass@host:port' # Required - the DB Connection string
   config.skip_content_types = true # Optional (only for `::update_space!`) - defaults to `true` - Skips Content Type creation upon updating a space
   config.locale = 'en-US' # Optional (only for `::update_space!` and `::run!`) - defaults to `'en-US'` - Defines the default locale for Space creation, and locale in which the content will be set for both creation and update

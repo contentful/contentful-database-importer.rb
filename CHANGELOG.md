@@ -1,6 +1,8 @@
 # CHANGELOG
 
 ## Unreleased
+### Added
+* Support for environments.
 
 ## 0.4.0
 

@@ -72,7 +72,7 @@ module Contentful
         return transformation.call(value) if transformation.respond_to?(:call)
 
         raise
-      rescue
+      rescue StandardError
         error = 'Pre Process could not be done for '
         error += "#{field_definition[:maps_to]} - #{transformation}"
         raise error

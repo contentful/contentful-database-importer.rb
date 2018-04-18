@@ -121,7 +121,7 @@ describe Contentful::DatabaseImporter do
         file = FileDouble.new
         expect(Contentful::DatabaseImporter::JsonGenerator).to receive(:generate_json!)
         expect(Tempfile).to receive(:new) { file }
-        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:update_space).with('foo', locale: 'en-US', json_template: 'foo', skip_content_types: true)
+        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:update_space).with('foo', environment: 'master', locale: 'en-US', json_template: 'foo', skip_content_types: true)
 
         described_class.setup do |config|
           config.space_id = 'foo'
@@ -135,12 +135,27 @@ describe Contentful::DatabaseImporter do
         file = FileDouble.new
         expect(Contentful::DatabaseImporter::JsonGenerator).to receive(:generate_json!)
         expect(Tempfile).to receive(:new) { file }
-        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:update_space).with('foo', locale: 'es-AR', json_template: 'foo', skip_content_types: true)
+        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:update_space).with('foo', environment: 'master', locale: 'es-AR', json_template: 'foo', skip_content_types: true)
 
         described_class.setup do |config|
           config.space_id = 'foo'
           config.database_connection = 'bar'
           config.locale = 'es-AR'
+        end
+
+        described_class.update_space!
+      end
+
+      it 'can be called with a different environment' do
+        file = FileDouble.new
+        expect(Contentful::DatabaseImporter::JsonGenerator).to receive(:generate_json!)
+        expect(Tempfile).to receive(:new) { file }
+        expect_any_instance_of(Contentful::Bootstrap::CommandRunner).to receive(:update_space).with('foo', environment: 'staging', locale: 'en-US', json_template: 'foo', skip_content_types: true)
+
+        described_class.setup do |config|
+          config.space_id = 'foo'
+          config.database_connection = 'bar'
+          config.environment = 'staging'
         end
 
         described_class.update_space!
