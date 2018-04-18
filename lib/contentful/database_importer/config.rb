@@ -6,9 +6,11 @@ module Contentful
                     :space_id,
                     :database_connection,
                     :skip_content_types,
-                    :locale
+                    :locale,
+                    :environment
 
       def initialize
+        @environment = 'master'
         @skip_content_types = true
         @locale = 'en-US'
       end
