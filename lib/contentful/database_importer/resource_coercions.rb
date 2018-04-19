@@ -70,7 +70,7 @@ module Contentful
 
       def coerce_date(value)
         case value
-        when Date, DateTime
+        when Time, Date, DateTime
           value.iso8601
         when String
           value
