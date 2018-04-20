@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.6.0
+### Added
+* Added support for `Time` coercion. [#21](https://github.com/contentful/contentful-database-importer.rb/pull/21)
+
 ## 0.5.0
 ### Added
 * Support for environments.
