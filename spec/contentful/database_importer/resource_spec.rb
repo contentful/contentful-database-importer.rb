@@ -741,6 +741,13 @@ describe Contentful::DatabaseImporter::Resource do
     end
 
     describe 'date' do
+      it 'can be coerced from a Time object' do
+        date = Time.now
+        entry = AllTypesMockResource.new({date: date})
+
+        expect(entry.bootstrap_fields[:date]).to eq date.iso8601
+      end
+
       it 'can be coerced from a Date object' do
         date = Date.today
         entry = AllTypesMockResource.new({date: date})
